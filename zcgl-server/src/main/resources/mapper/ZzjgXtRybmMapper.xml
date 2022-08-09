@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.yiwuyu.zcgl.dao.ZzjgXtRybmMapper">
+
+    <select id="get" resultType="club.yiwuyu.zcgl.model.ZzjgXtRybm">
+        SELECT rybm, rymc, dlkl, gnqx, xb
+          FROM t_zzjg_xt_rybm
+         WHERE sfsc = 'N'
+           AND dlbm = #{dlbm}
+    </select>
+
+    <select id="checkDlbm" resultType="java.lang.Integer">
+        SELECT count(*)
+          FROM t_zzjg_xt_rybm
+         WHERE dlbm = #{dlbm}
+    </select>
+
+    <select id="checkRybm" resultType="club.yiwuyu.zcgl.model.ZzjgXtRybm">
+        SELECT count(*)
+          FROM t_zzjg_xt_rybm
+         WHERE sfsc = 'N'
+           AND rybm = #{rybm}
+    </select>
+
+    <update id="delRy" parameterType="java.lang.String">
+        UPDATE t_zzjg_xt_rybm
+           SET sfsc = 'Y'
+         WHERE rybm = #{rybm}
+           AND sfsc = 'N'
+    </update>
+
+    <select id="selectAll" resultType="club.yiwuyu.zcgl.model.ZzjgXtRybm">
+        SELECT rybm,
+               rymc,
+               dlbm,
+               gnqx,
+               xb,
+               cjsj
+        FROM t_zzjg_xt_rybm
+        WHERE sfsc = 'N'
+    </select>
+    <select id="getGnqx" resultType="java.lang.String">
+        SELECT gnqx
+          FROM t_zzjg_xt_rybm
+         WHERE rybm = #{rybm}
+           AND sfsc = 'N'
+    </select>
+    <select id="queryAll" resultType="club.yiwuyu.zcgl.model.ZzjgXtRybm">
+        SELECT *
+          FROM t_zzjg_xt_rybm
+         WHERE sfsc = 'N'
+    </select>
+</mapper>

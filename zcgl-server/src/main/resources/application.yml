@@ -1,0 +1,57 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: 资产管理系统
+  # 数据库配置
+  datasource:
+    driver-class-name: dm.jdbc.driver.DmDriver
+    url: jdbc:dm://LOCALHOST:5236/SYSDBA
+    username: ZCGL
+    password: ZCGL123456
+  # 设置上传的文件的最大大小（默认为1MB）
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  # 解决springboot2.7.0下knife4j解析不到api问题
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+application:
+  redis:
+    enabled: false
+  # swagger配置
+  swagger:
+    title: ${spring.application.name}
+    group-name: ${spring.application.name}
+    description: ${spring.application.name}
+  # token配置
+  authorize:
+    secret: zcgl2022
+    timeout: 5*60*1000*1000
+  logback:
+    # 是否使用文件存储
+    use-file: true
+    file-path: /demo/logs/
+    # 是否使用数据库存储
+    use-db: false
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+
+# 日志配置
+logging:
+  level:
+    root: info
+    club:
+      yiwuyu:
+        zcgl:
+          dao: debug
+
+# 操作日志配置
+oplog:
+  search:
+    white-packages[0]: club.yiwuyu.zcgl.api

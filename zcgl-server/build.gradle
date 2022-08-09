@@ -1,0 +1,46 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'com.tfswx.jcyw'
+version = '1.0.0'
+sourceCompatibility = '1.8'
+
+repositories {
+    maven {
+        allowInsecureProtocol true
+        url "http://192.168.7.197:8081/repository/maven-public/"
+    }
+    maven {
+        allowInsecureProtocol true
+        url "http://192.168.7.197:8081/repository/maven-snapshots/"
+    }
+    mavenCentral()
+}
+
+configurations {
+    all {
+        resolutionStrategy.cacheChangingModulesFor 0, "seconds"
+    }
+}
+
+dependencies {
+    implementation ('com.tfswx.proj:newbie-boot-starter:2.0.0-SNAPSHOT') {
+        // 本项目不采用redis持久化token数据
+        exclude (module: 'sa-token-dao-redis-jackson')
+    }
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    runtimeOnly 'com.dameng:Dm8JdbcDriver18:8.1.1.49'
+    // 通过升版本，解决springboot2.7.0下pagehelper循环依赖问题
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.1'
+    // 解决项目编译时报'符号不存在'问题
+    annotationProcessor 'org.projectlombok:lombok'
+    // 操作日志记录组件
+    implementation 'com.tfswx:tf-spring-boot-oplog-starter:1.1.6'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

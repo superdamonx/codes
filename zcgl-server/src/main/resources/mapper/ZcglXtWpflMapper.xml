@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.yiwuyu.zcgl.dao.ZcglXtWpflMapper">
+    <insert id="insert" parameterType="club.yiwuyu.zcgl.model.ZcglXtWpfl">
+        INSERT INTO t_zcgl_xt_wpfl(flbm,
+                                   flmc,
+                                   tplj,
+                                   jldw,
+                                   flxh,
+                                   flsm,
+                                   bz,
+                                   sfsc,
+                                   cjsj,
+                                   zhxgsj)
+        VALUES (#{flbm},
+                #{flmc},
+                #{tplj},
+                #{jldw},
+                #{flxh},
+                #{flsm},
+                #{bz},
+                #{sfsc},
+                #{cjsj},
+                #{zhxgsj})
+    </insert>
+
+    <select id="selectMaxXh" resultType="club.yiwuyu.zcgl.model.ZcglXtWpfl">
+        SELECT *
+        FROM (
+                 SELECT flbm,
+                        flmc,
+                        tplj,
+                        jldw,
+                        flxh,
+                        flsm,
+                        bz,
+                        sfsc,
+                        cjsj,
+                        zhxgsj
+                 FROM t_zcgl_xt_wpfl
+                WHERE sfsc = 'N'
+                 ORDER BY flxh DESC
+             ) LIMIT 1
+    </select>
+
+    <update id="autoIncrementFlxh" parameterType="java.lang.Integer">
+        UPDATE t_zcgl_xt_wpfl
+           SET flxh = flxh + 1
+         WHERE flxh >= #{flxh}
+           AND sfsc = 'N'
+    </update>
+
+    <update id="deleteById" parameterType="java.lang.Integer">
+        UPDATE t_zcgl_xt_wpfl
+           SET sfsc = 'Y'
+         WHERE flbm = #{flbm}
+           AND sfsc = 'N'
+    </update>
+    <update id="updateByFlbm" parameterType="club.yiwuyu.zcgl.model.ZcglXtWpfl">
+        UPDATE t_zcgl_xt_wpfl
+           SET flmc = #{flmc},
+               flsm = #{flsm},
+               flxh = #{flxh},
+               jldw = #{jldw},
+               tplj = #{tplj}
+         WHERE flbm = #{flbm}
+           AND sfsc = 'N'
+    </update>
+
+    <select id="findByFlbm" resultType="club.yiwuyu.zcgl.model.ZcglXtWpfl">
+        SELECT flbm,
+               flmc,
+               tplj,
+               jldw,
+               flxh,
+               flsm,
+               bz,
+               sfsc,
+               cjsj,
+               zhxgsj
+        FROM t_zcgl_xt_wpfl
+        WHERE flbm = #{flbm}
+          AND sfsc = 'N'
+    </select>
+
+    <select id="findBy" resultType="club.yiwuyu.zcgl.model.ZcglXtWpfl">
+        SELECT flbm,
+               flmc,
+               tplj,
+               jldw,
+               flxh,
+               flsm,
+               bz,
+               sfsc,
+               cjsj,
+               zhxgsj
+        FROM t_zcgl_xt_wpfl
+        WHERE flbm = #{flbm}
+          AND sfsc = 'N'
+    </select>
+    <select id="findAllFl" resultType="club.yiwuyu.zcgl.model.ZcglXtWpfl">
+        SELECT flbm,
+               flmc,
+               tplj,
+               jldw,
+               flxh,
+               flsm,
+               bz,
+               sfsc,
+               cjsj,
+               zhxgsj
+        FROM t_zcgl_xt_wpfl
+       WHERE sfsc = 'N'
+    </select>
+    <select id="selectAll" resultType="club.yiwuyu.zcgl.dto.wpflgl.WpflglKcOutputDTO">
+        SELECT flbm,
+               flmc,
+               SUM(cksl) AS cksl,
+               SUM(rksl) AS rksl
+          FROM
+        (SELECT wpflbm as flbm,
+               wpflmc as flmc,
+               CASE crklx
+                    WHEN '出库' THEN SUM(wpsl)
+                    ELSE 0
+                    END AS cksl,
+               CASE crklx
+                    WHEN '入库' THEN SUM(wpsl)
+                    ELSE 0
+                    END AS rksl
+          FROM t_zcgl_yx_crkmx
+         WHERE sfsc = 'N'
+        GROUP BY wpflbm,
+                 wpflmc,
+                 crklx)
+         GROUP BY flbm,
+                  flmc
+    </select>
+</mapper>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="club.yiwuyu.zcgl.dao.ZcglYxCrkmxMapper">
+
+    <select id="che" resultType="club.yiwuyu.zcgl.model.ZcglYxCrkmx">
+        SELECT *
+        FROM t_zcgl_yx_crkmx
+        WHERE wpflmc = #{wpflmc}
+        AND sfsc = 'N'
+    </select>
+    <select id="getAll" resultType="club.yiwuyu.zcgl.model.ZcglYxCrkmx">
+        SELECT crklx,
+               crksj,
+               crksm,
+               czrbm,
+               czrmc,
+               wpflbm,
+               wpflmc,
+               wpsl
+          FROM t_zcgl_yx_crkmx
+         WHERE crkbh = #{crkbh} OR #{crkbh} IS NULL
+           AND sfsc = 'N'
+    </select>
+    <select id="find" resultType="club.yiwuyu.zcgl.model.ZcglYxCrkmx">
+        SELECT *
+         FROM t_zcgl_yx_crkmx
+        WHERE wpflmc = #{wpflmc}
+          AND sfsc = 'N'
+    </select>
+    <select id="query" resultType="club.yiwuyu.zcgl.query.CrkmxQueryOutputDTO">
+        SELECT *
+          FROM t_zcgl_yx_crkmx
+         WHERE  wpflbm = #{wpflbm} OR #{wpflbm} IS NULL
+           AND crklx = #{crklx} OR #{crklx} IS NULL
+           AND czrbm = #{czrbm} OR #{czrbm} IS NULL
+           AND sfsc = 'N'
+    </select>
+    <insert id="insert" parameterType="club.yiwuyu.zcgl.model.ZcglYxCrkmx">
+        INSERT INTO t_zcgl_yx_crkmx
+                    (crkbh,
+                     crklx,
+                     crksm,
+                     wpflbm,
+                     wpflmc,
+                     wpsl,
+                     czrbm,
+                     czrmc,
+                     crksj,
+                     sfsc,
+                     zhxgsj,
+                     cjsj,
+                     bz
+                     )
+        VALUES (#{crkbh},
+                #{crklx},
+                #{crksm},
+                #{wpflbm},
+                #{wpflmc},
+                #{wpsl},
+                #{czrbm},
+                #{czrmc},
+                #{crksj},
+                #{sfsc},
+                #{zhxgsj},
+                #{cjsj},
+                #{bz}
+                )
+    </insert>
+    <update id="deleteByCrkbh" >
+        UPDATE t_zcgl_yx_crkmx
+        SET sfsc = 'Y'
+        WHERE crkbh = #{crkbh}
+          AND sfsc = 'N'
+    </update>
+    <update id="updateByBh" parameterType="club.yiwuyu.zcgl.model.ZcglYxCrkmx">
+        UPDATE t_zcgl_yx_crkmx
+           SET crksm = #{crksm},
+               wpflbm = #{wpflbm},
+               wpflmc = #{wpflmc},
+               wpsl = #{wpsl}
+        WHERE crkbh = #{crkbh}
+          AND sfsc = 'N'
+    </update>
+</mapper>
+
